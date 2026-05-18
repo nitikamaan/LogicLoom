@@ -1,0 +1,211 @@
+/* ================= RESET ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #111827, #0b1020);
+  color: #e5e7eb;
+}
+
+/* ================= LAYOUT SYSTEM ================= */
+
+.page {
+  min-height: 100vh;
+  padding: 30px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* ================= GLASS CARD ================= */
+
+.card {
+  background: rgba(17, 24, 39, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* ================= AUTH ================= */
+
+.auth-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  width: 380px;
+  padding: 30px;
+  border-radius: 18px;
+  background: rgba(17, 24, 39, 0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* ================= INPUT ================= */
+
+input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 10px;
+  margin-bottom: 12px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  background: #1f2937;
+  color: white;
+  transition: 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56,189,248,0.2);
+}
+
+/* ================= BUTTONS ================= */
+
+.primary-btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #7c3aed, #06b6d4);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.primary-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+
+.logout-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #ef4444;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.delete-btn {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #ef4444;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+/* ================= DASHBOARD HEADER ================= */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.topbar h1 {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+/* ================= GRID ================= */
+
+.employee-grid,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+/* ================= EMPLOYEE CARD ================= */
+
+.employee-card {
+  background: rgba(17, 24, 39, 0.85);
+  border-radius: 16px;
+  padding: 18px;
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.2s;
+}
+
+.employee-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+}
+
+/* ================= BADGES ================= */
+
+.badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  margin-right: 6px;
+  background: #7c3aed;
+}
+
+.badge.green {
+  background: #10b981;
+}
+
+/* ================= SEARCH ================= */
+
+.search-input {
+  width: 300px;
+  margin-bottom: 15px;
+}
+
+/* ================= AI BOX ================= */
+
+.ai-card {
+  margin-top: 20px;
+  padding: 18px;
+  border-radius: 16px;
+  background: rgba(17,24,39,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+pre {
+  white-space: pre-wrap;
+  color: #d1d5db;
+}
+
+/* ================= LINKS ================= */
+
+.bottom-text {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.bottom-text a {
+  color: #38bdf8;
+  text-decoration: none;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .search-input {
+    width: 100%;
+  }
+}
