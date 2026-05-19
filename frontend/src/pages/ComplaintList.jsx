@@ -11,7 +11,7 @@ function ComplaintList() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/complaints",
+        `${BASE_URL}/api/complaints`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // FIXED
@@ -36,7 +36,7 @@ function ComplaintList() {
   const deleteComplaint = async (id) => {
     try {
       await axios.delete(
-        `http://localhost:5000/api/complaints/${id}`,
+        `${BASE_URL}/api/complaints/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`, // FIXED
@@ -57,7 +57,7 @@ function ComplaintList() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/complaints/${id}`,
+        `${BASE_URL}/api/complaints/${id}`,
         { status },
         {
           headers: {

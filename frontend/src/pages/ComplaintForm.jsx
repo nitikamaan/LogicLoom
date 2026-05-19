@@ -28,7 +28,7 @@ function ComplaintForm() {
 
       // 1. SAVE COMPLAINT
       const res = await axios.post(
-        "http://localhost:5000/api/complaints",
+        `${BASE_URL}/api/complaints`,
         form,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -39,7 +39,7 @@ function ComplaintForm() {
 
       // 2. AI ANALYSIS
       const aiRes = await axios.post(
-        "http://localhost:5000/api/ai/analyze",
+        `${BASE_URL}/api/ai/analyze`,
         {
           description: form.description,
         }
