@@ -1,31 +1,75 @@
-const dns = require("dns").promises;
-dns.setServers(["8.8.8.8", "1.1.1.1"]);
-
 const express = require("express");
-
-const dotenv = require("dotenv");
 const cors = require("cors");
-const connectDB = require("./config/db");
+const dotenv = require("dotenv");
 
 dotenv.config();
-connectDB();
+
+const connectDB = require("./config/db");
+
+const complaintRoutes = require(
+  "./routes/complaintRoutes"
+);
+
+const authRoutes = require(
+  "./routes/authRoutes"
+);
+
+const aiRoutes = require(
+  "./routes/aiRoutes"
+);
+
+const errorMiddleware = require(
+  "./middleware/errorMiddleware"
+);
 
 const app = express();
 
+
+// DATABASE CONNECTION
+connectDB();
+
+
+// MIDDLEWARE
 app.use(cors());
+
 app.use(express.json());
 
-// Routes
-app.use("/api/employees", require("./routes/employeeRoutes"));
-app.use("/api/auth", require("./routes/authRoutes"));
-app.use("/api/ai", require("./routes/aiRoutes"));
 
+// ROUTES
+app.use(
+  "/api/complaints",
+  complaintRoutes
+);
+
+app.use(
+  "/api/auth",
+  authRoutes
+);
+
+app.use(
+  "/api/ai",
+  aiRoutes
+);
+
+
+// TEST ROUTE
 app.get("/", (req, res) => {
-  res.send("API Running");
+  res.send(
+    "AI Complaint Backend Running"
+  );
 });
 
-const PORT = process.env.PORT || 5000;
+
+// ERROR HANDLER
+app.use(errorMiddleware);
+
+
+// PORT
+const PORT =
+  process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on ${PORT}`);
+  console.log(
+    `Server running on port ${PORT}`
+  );
 });

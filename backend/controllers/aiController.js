@@ -1,60 +1,71 @@
-const axios = require("axios");
+exports.analyzeComplaint =
+  async (req, res) => {
 
-exports.getRecommendation = async (req, res) => {
-  try {
-    const employee = req.body;
+    try {
 
-    if (!employee) {
-      return res.status(400).json({ message: "No employee data received" });
-    }
+      const text =
+        req.body.description.toLowerCase();
 
-    const prompt = `
-Analyze employee performance:
+      let priority = "Low";
 
-Name: ${employee.name}
-Skills: ${employee.skills}
-Performance Score: ${employee.performanceScore}
+      let department =
+        "General Department";
 
-Give:
-1. Promotion Recommendation
-2. Ranking
-3. Training Suggestions
-4. Improvement Feedback
-`;
-
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: "openai/gpt-3.5-turbo",
-        messages: [
-          {
-            role: "user",
-            content: prompt
-          }
-        ]
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "http://localhost:3000",
-          "X-Title": "Employee AI System"
-        }
+      if (
+        text.includes("fire") ||
+        text.includes("danger")
+      ) {
+        priority = "High";
       }
-    );
 
-    return res.json(response.data);
+      if (
+        text.includes("electricity")
+      ) {
+        department =
+          "Electricity Department";
 
-  } catch (error) {
-  console.log("🔥 ========== FULL AI ERROR ==========");
+        priority = "High";
+      }
 
-  console.log("STATUS:", error.response?.status);
-  console.log("DATA:", JSON.stringify(error.response?.data, null, 2));
-  console.log("MESSAGE:", error.message);
+      else if (
+        text.includes("water")
+      ) {
+        department =
+          "Water Department";
+      }
 
-  return res.status(500).json({
-    message: "AI Failed",
-    error: error.response?.data || error.message
-  });
-}
-};
+      else if (
+        text.includes("garbage")
+      ) {
+        department =
+          "Sanitation Department";
+      }
+
+      else if (
+        text.includes("road")
+      ) {
+        department =
+          "Road Maintenance Department";
+      }
+
+      const summary =
+        text.substring(0, 100);
+
+      const response =
+        "Your complaint has been successfully registered and forwarded to the concerned department.";
+
+      res.json({
+        priority,
+        department,
+        summary,
+        response,
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message:
+          "AI Analysis Failed",
+      });
+    }
+  };

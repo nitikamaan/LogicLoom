@@ -1,8 +1,16 @@
 const express = require("express");
+
 const router = express.Router();
 
-const { getRecommendation } = require("../controllers/aiController");
+const {
+  analyzeComplaint,
+} = require(
+  "../controllers/aiController"
+);
 
-router.post("/recommendation", getRecommendation);
+router.post(
+  "/analyze",
+  analyzeComplaint
+);
 
 module.exports = router;

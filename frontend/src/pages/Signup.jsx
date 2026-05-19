@@ -1,42 +1,63 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 
-export default function Signup() {
+function Signup() {
   const navigate = useNavigate();
-  const [data, setData] = useState({
+
+  const [form, setForm] = useState({
     name: "",
     email: "",
-    password: ""
+    password: "",
   });
 
-  const signup = () => {
-    if (!data.name || !data.email || !data.password)
-      return alert("Fill all fields");
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-    localStorage.setItem("registeredUser", JSON.stringify(data));
+  const handleSignup = async (e) => {
+    e.preventDefault();
 
-    alert("Signup successful");
-    navigate("/login");
+    try {
+      await axios.post("http://localhost:5000/api/auth/signup", form);
+      alert("Signup success");
+      navigate("/");
+    } catch {
+      alert("Signup failed");
+    }
   };
 
   return (
-    <div className="auth-page">
+    <div className="auth-container">
       <div className="auth-card">
         <h1>Create Account</h1>
-        <p>Register to continue</p>
+        <p>Register now</p>
 
-        <input placeholder="Name" onChange={(e) => setData({ ...data, name: e.target.value })} />
-        <input placeholder="Email" onChange={(e) => setData({ ...data, email: e.target.value })} />
-        <input type="password" placeholder="Password" onChange={(e) => setData({ ...data, password: e.target.value })} />
+        <form onSubmit={handleSignup}>
+          <div className="input-group">
+            <label>Name</label>
+            <input name="name" onChange={handleChange} />
+          </div>
 
-        <button className="primary-btn" onClick={signup}>
-          Register
-        </button>
+          <div className="input-group">
+            <label>Email</label>
+            <input name="email" onChange={handleChange} />
+          </div>
 
-        <p className="bottom-text">
-          Already have account? <Link to="/login">Login</Link>
+          <div className="input-group">
+            <label>Password</label>
+            <input type="password" name="password" onChange={handleChange} />
+          </div>
+
+          <button className="primary-btn">Signup</button>
+        </form>
+
+        <p className="link-text">
+          Already have account? <Link to="/">Login</Link>
         </p>
       </div>
     </div>
   );
 }
+
+export default Signup;

@@ -1,28 +1,63 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import "./App.css";
+import {
+  Routes,
+  Route,
+} from "react-router-dom";
 
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login.jsx";
 
-import EmployeeList from "./components/EmployeeList";
-import EmployeeForm from "./components/EmployeeForm";
-import AIRecommendation from "./components/AIRecommendation";
+import Signup from "./pages/Signup.jsx";
+
+import Dashboard from "./pages/Dashboard.jsx";
+
+import ComplaintForm from "./pages/ComplaintForm.jsx";
+
+import ComplaintList from "./pages/ComplaintList.jsx";
+
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/employees" element={<EmployeeList />} />
-        <Route path="/add" element={<EmployeeForm />} />
-        <Route path="/ai" element={<AIRecommendation />} />
-      </Routes>
-    </BrowserRouter>
+  return (
+    <Routes>
+
+      <Route
+        path="/"
+        element={<Login />}
+      />
+
+      <Route
+        path="/signup"
+        element={<Signup />}
+      />
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/add-complaint"
+        element={
+          <ProtectedRoute>
+            <ComplaintForm />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/complaints"
+        element={
+          <ProtectedRoute>
+            <ComplaintList />
+          </ProtectedRoute>
+        }
+      />
+
+    </Routes>
   );
 }
 
