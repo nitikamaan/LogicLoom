@@ -4,27 +4,32 @@ import axios from "axios";
 function ComplaintList() {
   const [data, setData] = useState([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
 
-  // ================= FETCH COMPLAINTS =================
+  // ================= FETCH =================
   const fetchData = async () => {
     try {
+      setLoading(true);
+
       const res = await axios.get(
         "https://syncbasebackend.onrender.com/api/complaints",
         {
           headers: {
-            Authorization: `Bearer ${token}`, // FIXED
+            Authorization: `Bearer ${token}`,
           },
         }
       );
 
-      setData(res.data.data); // FIXED (backend sends {data: []})
+      setData(res.data.data);
     } catch (error) {
       console.log(
         "FETCH ERROR:",
         error.response?.data || error.message
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,10 +41,10 @@ function ComplaintList() {
   const deleteComplaint = async (id) => {
     try {
       await axios.delete(
-        "https://syncbasebackend.onrender.com/api/complaints/${id}",
+        `https://syncbasebackend.onrender.com/api/complaints/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // FIXED
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -57,11 +62,11 @@ function ComplaintList() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        "https://syncbasebackend.onrender.com/api/complaints/${id}",
+        `https://syncbasebackend.onrender.com/api/complaints/${id}`,
         { status },
         {
           headers: {
-            Authorization: `Bearer ${token}`, // FIXED
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -75,12 +80,17 @@ function ComplaintList() {
     }
   };
 
-  // ================= SAFE FILTER =================
+  // ================= FILTER =================
   const filtered = (data || []).filter((c) =>
     c.location
       ?.toLowerCase()
       .includes(search.toLowerCase())
   );
+
+  // ================= LOADING =================
+  if (loading) {
+    return <p>Loading complaints...</p>;
+  }
 
   return (
     <div className="complaints-container">

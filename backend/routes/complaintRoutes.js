@@ -1,12 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const axios = require("axios");
 
 const { body, validationResult } = require("express-validator");
 
 const Complaint = require("../models/Complaint");
 const authMiddleware = require("../middleware/authMiddleware");
 
-// ================= ADD COMPLAINT (WITH VALIDATION) =================
+// ======================================================
+// 1. ADD COMPLAINT + AI INTEGRATION
+// ======================================================
 router.post(
   "/",
   authMiddleware,
@@ -30,7 +33,37 @@ router.post(
         });
       }
 
-      const complaint = new Complaint(req.body);
+      // ================= AI CALL =================
+      let aiData = {
+        priority: "Low",
+        department: "General",
+        summary: "No summary available",
+        response: "We will look into your complaint soon.",
+      };
+
+      try {
+        const aiRes = await axios.post(
+          "https://syncbasebackend.onrender.com/api/ai/analyze",
+          {
+            description: req.body.description,
+          }
+        );
+
+        aiData = aiRes.data;
+      } catch (aiError) {
+        console.log("AI Error:", aiError.message);
+      }
+
+      // ================= SAVE COMPLAINT =================
+      const complaint = new Complaint({
+        ...req.body,
+
+        priority: aiData.priority,
+        department: aiData.department,
+        aiSummary: aiData.summary,
+        autoResponse: aiData.response,
+      });
+
       await complaint.save();
 
       res.status(201).json({
@@ -38,7 +71,10 @@ router.post(
         message: "Complaint stored successfully",
         data: complaint,
       });
+
     } catch (error) {
+      console.log("Server Error:", error.message);
+
       res.status(500).json({
         success: false,
         message: "Server Error",
@@ -47,10 +83,14 @@ router.post(
   }
 );
 
-// ================= GET ALL =================
+// ======================================================
+// 2. GET ALL COMPLAINTS
+// ======================================================
 router.get("/", authMiddleware, async (req, res) => {
   try {
-    const complaints = await Complaint.find().sort({ createdAt: -1 });
+    const complaints = await Complaint.find().sort({
+      createdAt: -1,
+    });
 
     res.json({
       success: true,
@@ -64,7 +104,9 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// ================= UPDATE STATUS =================
+// ======================================================
+// 3. UPDATE STATUS
+// ======================================================
 router.put("/:id", authMiddleware, async (req, res) => {
   try {
     const updated = await Complaint.findByIdAndUpdate(
@@ -86,7 +128,9 @@ router.put("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// ================= DELETE =================
+// ======================================================
+// 4. DELETE COMPLAINT
+// ======================================================
 router.delete("/:id", authMiddleware, async (req, res) => {
   try {
     await Complaint.findByIdAndDelete(req.params.id);
@@ -103,11 +147,16 @@ router.delete("/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// ================= SEARCH BY LOCATION =================
+// ======================================================
+// 5. SEARCH BY LOCATION
+// ======================================================
 router.get("/search/location", authMiddleware, async (req, res) => {
   try {
     const complaints = await Complaint.find({
-      location: { $regex: req.query.location, $options: "i" },
+      location: {
+        $regex: req.query.location,
+        $options: "i",
+      },
     });
 
     res.json({
@@ -122,7 +171,9 @@ router.get("/search/location", authMiddleware, async (req, res) => {
   }
 });
 
-// ================= FILTER CATEGORY =================
+// ======================================================
+// 6. FILTER BY CATEGORY
+// ======================================================
 router.get("/category/filter", authMiddleware, async (req, res) => {
   try {
     const complaints = await Complaint.find({
