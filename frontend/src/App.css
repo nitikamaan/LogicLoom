@@ -174,16 +174,11 @@ body {
 }
 
 .ai-box {
-  margin-top: 12px;
+  margin-top: 10px;
   padding: 15px;
   background: #eef2ff;
   border-left: 5px solid #4f46e5;
-  border-radius: 12px;
-}
-
-.ai-box h3 {
-  color: #4f46e5;
-  margin-bottom: 8px;
+  border-radius: 10px;
 }
 
 /* ================= FORM ================= */
