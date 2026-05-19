@@ -11,7 +11,7 @@ function ComplaintList() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        `${BASE_URL}/api/complaints`,
+        "https://syncbasebackend.onrender.com/api/complaints",
         {
           headers: {
             Authorization: `Bearer ${token}`, // FIXED
@@ -36,7 +36,7 @@ function ComplaintList() {
   const deleteComplaint = async (id) => {
     try {
       await axios.delete(
-        `${BASE_URL}/api/complaints/${id}`,
+        "https://syncbasebackend.onrender.com/api/complaints/${id}",
         {
           headers: {
             Authorization: `Bearer ${token}`, // FIXED
@@ -57,7 +57,7 @@ function ComplaintList() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `${BASE_URL}/api/complaints/${id}`,
+        "https://syncbasebackend.onrender.com/api/complaints/${id}",
         { status },
         {
           headers: {

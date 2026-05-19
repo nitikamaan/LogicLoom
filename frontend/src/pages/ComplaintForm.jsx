@@ -28,7 +28,7 @@ function ComplaintForm() {
 
       // 1. SAVE COMPLAINT
       const res = await axios.post(
-        `${BASE_URL}/api/complaints`,
+        "https://syncbasebackend.onrender.com/api/complaints",
         form,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -39,7 +39,7 @@ function ComplaintForm() {
 
       // 2. AI ANALYSIS
       const aiRes = await axios.post(
-        `${BASE_URL}/api/ai/analyze`,
+        "https://syncbasebackend.onrender.com/api/ai/analyze",
         {
           description: form.description,
         }

@@ -19,7 +19,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        `${BASE_URL}/api/auth/login`,
+        "https://syncbasebackend.onrender.com/api/auth/login",
         form
       );
 

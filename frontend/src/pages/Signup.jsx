@@ -19,7 +19,7 @@ function Signup() {
     e.preventDefault();
 
     try {
-      await axios.post(`${BASE_URL}/api/auth/signup`, form);
+      await axios.post("https://syncbasebackend.onrender.com/api/auth/signup", form);
       alert("Signup success");
       navigate("/");
     } catch {
